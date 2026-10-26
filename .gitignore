@@ -1,0 +1,5 @@
+# Created by Edge when the extension is loaded unpacked
+_metadata/
+
+node_modules/
+*.zip

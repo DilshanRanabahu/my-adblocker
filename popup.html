@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My AdBlocker</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #656d76;
+      --border: #d8dee4;
+      --accent: #1f883d;
+      --danger: #cf222e;
+      --track: #d0d7de;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #22272e;
+        --fg: #e6edf3;
+        --muted: #9198a1;
+        --border: #373e47;
+        --accent: #3fb950;
+        --danger: #f85149;
+        --track: #444c56;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      width: 280px;
+      background: var(--bg);
+      color: var(--fg);
+      font: 14px/1.5 "Segoe UI", system-ui, sans-serif;
+    }
+    header, section { padding: 14px 16px; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    section + section { border-top: 1px solid var(--border); }
+    h1 { margin: 0; font-size: 15px; font-weight: 600; }
+    .status { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+
+    .switch { position: relative; width: 40px; height: 22px; flex: none; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0; cursor: pointer;
+      background: var(--track); border-radius: 22px; transition: background .15s;
+    }
+    .slider::before {
+      content: ""; position: absolute; left: 3px; top: 3px;
+      width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s;
+    }
+    .switch input:checked + .slider { background: var(--accent); }
+    .switch input:checked + .slider::before { transform: translateX(18px); }
+    .switch input:focus-visible + .slider { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .site { margin: 0; font-weight: 600; word-break: break-all; }
+    .count { margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+    .count strong { color: var(--fg); font-variant-numeric: tabular-nums; }
+    .hint { margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+    button {
+      width: 100%; padding: 8px 12px; cursor: pointer;
+      font: inherit; font-weight: 600; border-radius: 6px;
+      border: 1px solid var(--border); background: transparent; color: var(--fg);
+    }
+    button:hover:not(:disabled) { border-color: var(--fg); }
+    button:disabled { cursor: default; opacity: .5; }
+    button.allowed { color: var(--danger); border-color: var(--danger); }
+
+    .lists { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .lists p { margin: 0; font-size: 12px; color: var(--muted); }
+    .lists button { width: auto; padding: 4px 10px; font-size: 12px; flex: none; }
+    .error { color: var(--danger) !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>My AdBlocker</h1>
+      <p class="status" id="status"></p>
+    </div>
+    <label class="switch" title="Turn ad blocking on or off">
+      <input type="checkbox" id="enabled">
+      <span class="slider"></span>
+    </label>
+  </header>
+
+  <section>
+    <p class="site" id="site">…</p>
+    <p class="count" id="count"></p>
+    <p class="hint" id="hint"></p>
+    <button id="toggle-site" disabled></button>
+  </section>
+
+  <section class="lists">
+    <p id="lists-info"></p>
+    <button id="update-lists">Update now</button>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>
